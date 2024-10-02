@@ -1,11 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import seaborn as sns
 import streamlit as st
-import urllib
-from func import DataAnalyzer, BrazilMapPlotter
 from babel.numbers import format_currency
+from func import DataAnalyzer, BrazilMapPlotter
+
 
 # Set styling
 sns.set(style='dark')
@@ -113,26 +112,30 @@ with col2:
     st.markdown(f"Average Items: **{avg_items:.2f}**")
 
 # Grafik Item Pesanan
-fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(45, 25))
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(20, 8))
 
 colors = ["#068DA9", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
 
-sns.barplot(x="product_count", y="product_category_name_english", data=sum_order_items_df.head(5), palette=colors, ax=ax[0])
+# Produk paling banyak terjual
+sns.barplot(x="product_count", y="product_category_name_english", hue="product_category_name_english", 
+            data=sum_order_items_df.head(5), palette=colors, ax=ax[0], legend=False)
 ax[0].set_ylabel(None)
-ax[0].set_xlabel("Number of Sales", fontsize=30)
-ax[0].set_title("Produk paling banyak terjual", loc="center", fontsize=50)
-ax[0].tick_params(axis='y', labelsize=35)
-ax[0].tick_params(axis='x', labelsize=30)
+ax[0].set_xlabel("Number of Sales", fontsize=15)
+ax[0].set_title("Produk paling banyak terjual", loc="center", fontsize=20)
+ax[0].tick_params(axis='y', labelsize=12)
+ax[0].tick_params(axis='x', labelsize=12)
 
-sns.barplot(x="product_count", y="product_category_name_english", data=sum_order_items_df.sort_values(by="product_count", ascending=True).head(5), palette=colors, ax=ax[1])
+# Produk paling sedikit terjual
+sns.barplot(x="product_count", y="product_category_name_english", hue="product_category_name_english", 
+            data=sum_order_items_df.sort_values(by="product_count", ascending=True).head(5), palette=colors, ax=ax[1], legend=False)
 ax[1].set_ylabel(None)
-ax[1].set_xlabel("Number of Sales", fontsize=30)
+ax[1].set_xlabel("Number of Sales", fontsize=15)
 ax[1].invert_xaxis()
 ax[1].yaxis.set_label_position("right")
 ax[1].yaxis.tick_right()
-ax[1].set_title("Produk paling sedikit terjual", loc="center", fontsize=50)
-ax[1].tick_params(axis='y', labelsize=35)
-ax[1].tick_params(axis='x', labelsize=30)
+ax[1].set_title("Produk paling sedikit terjual", loc="center", fontsize=20)
+ax[1].tick_params(axis='y', labelsize=12)
+ax[1].tick_params(axis='x', labelsize=12)
 
 st.pyplot(fig)
 
@@ -151,8 +154,9 @@ with col2:
 fig, ax = plt.subplots(figsize=(12, 6))
 sns.barplot(x=review_score.index, 
             y=review_score.values, 
-            order=review_score.index,
-            palette=["#068DA9" if score == common_score else "#D3D3D3" for score in review_score.index])
+            hue=review_score.index, 
+            palette=["#068DA9" if score == common_score else "#D3D3D3" for score in review_score.index], 
+            legend=False)
 
 plt.title("Rating by customers for service", fontsize=15)
 plt.xlabel("Rating")
@@ -172,8 +176,9 @@ with tab1:
     fig, ax = plt.subplots(figsize=(12, 6))
     sns.barplot(x=state.customer_state.value_counts().index,
                 y=state.customer_count.values, 
-                data=state,
-                palette=["#068DA9" if score == most_common_state else "#D3D3D3" for score in state.customer_state.value_counts().index])
+                hue=state.customer_state.value_counts().index,
+                palette=["#068DA9" if score == most_common_state else "#D3D3D3" for score in state.customer_state.value_counts().index],
+                legend=False)
 
     plt.title("Number customers from State", fontsize=15)
     plt.xlabel("State")
@@ -189,16 +194,15 @@ with tab2:
     fig, ax = plt.subplots(figsize=(12, 6))
     sns.barplot(x=order_status.index,
                 y=order_status.values,
-                order=order_status.index,
-                palette=["#068DA9" if score == common_status else "#D3D3D3" for score in order_status.index])
+                hue=order_status.index,
+                palette=["#068DA9" if score == common_status else "#D3D3D3" for score in order_status.index],
+                legend=False)
     
     plt.title("Order Status", fontsize=15)
     plt.xlabel("Status")
     plt.ylabel("Count")
     plt.xticks(fontsize=12)
     st.pyplot(fig)
-
-
 
 # Footer
 st.caption('Copyright (C) Rizky Asmi Fadillah. 2024')
