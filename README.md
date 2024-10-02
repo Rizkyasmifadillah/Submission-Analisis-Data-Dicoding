@@ -26,7 +26,6 @@ Proyek ini bertujuan untuk menganalisis data pada E-Commerce Public Dataset. Tuj
 
    ```shell
    pip install streamlit
-   pip install -r dashboard/requirements.txt
    ```
 
 ## Penggunaan
@@ -34,7 +33,6 @@ Proyek ini bertujuan untuk menganalisis data pada E-Commerce Public Dataset. Tuj
 Run Streamlit App
 
    ```shell
-   cd dicoding/dashboard/
-   streamlit run dashboard.py
+   (newenvi) vanillatte@MacBook-Air-Vanilla Streamlit % streamlit run dashboard.py
    ```
 
